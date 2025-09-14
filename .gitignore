@@ -1,0 +1,47 @@
+# Build artifacts
+build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Firmware specific
+firmware/bk7258/build/
+firmware/bk7258/output/
+
+# Mobile app builds
+mobile-apps/ios-app/build/
+mobile-apps/ios-app/DerivedData/
+mobile-apps/android-app/build/
+mobile-apps/android-app/.gradle/
+
+# Hardware design files (if proprietary)
+# hardware/proprietary/
+
+# Documentation builds
+documentation/build/
+
+# Test outputs
+tests/output/
+tests/logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
