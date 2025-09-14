@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BK7258 Debug (J-Link)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/firmware/bk7258/build/bk7258_camera_streaming.elf",
+            "device": "Cortex-M33",
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${workspaceFolder}/firmware/bk7258/docs/BK7258.svd",
+            "preLaunchTask": "Build Firmware",
+            "showDevDebugOutput": "raw",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 120000000,
+                "swoFrequency": 4000000,
+                "source": "probe",
+                "decoders": [
+                    {
+                        "type": "console",
+                        "label": "ITM",
+                        "port": 0
+                    }
+                ]
+            }
+        },
+        {
+            "name": "BK7258 Debug (OpenOCD)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/firmware/bk7258/build/bk7258_camera_streaming.elf",
+            "configFiles": [
+                "${workspaceFolder}/firmware/bk7258/debug/openocd.cfg"
+            ],
+            "preLaunchTask": "Build Firmware",
+            "runToEntryPoint": "main"
+        }
+    ]
+}

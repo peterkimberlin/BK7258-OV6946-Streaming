@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "marus25.cortex-debug",
+        "dan-c-underwood.arm",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools",
+        "formulahendry.code-runner",
+        "ms-python.python",
+        "streetsidesoftware.code-spell-checker",
+        "gruntfuggly.todo-tree",
+        "ms-vscode.hexeditor",
+        "augustocdias.tasks-shell-input",
+        "webfreak.debug",
+        "ms-vscode.makefile-tools"
+    ]
+}

@@ -1,0 +1,116 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Firmware",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "-C",
+                "${workspaceFolder}/firmware/bk7258",
+                "all"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Clean Firmware",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "-C",
+                "${workspaceFolder}/firmware/bk7258",
+                "clean"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Flash Firmware",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "-C",
+                "${workspaceFolder}/firmware/bk7258",
+                "flash"
+            ],
+            "group": "build",
+            "dependsOn": "Build Firmware",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build iOS App",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "${workspaceFolder}/mobile-apps/ios-app/CameraStreamer.xcodeproj",
+                "-scheme",
+                "CameraStreamer",
+                "-configuration",
+                "Debug",
+                "build"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/mobile-apps/ios-app"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build Android App",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "assembleDebug"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/mobile-apps/android-app"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}
