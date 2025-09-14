@@ -1,0 +1,143 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.camerastreamer.bk7258'
+    compileSdk rootProject.ext.compileSdk
+
+    defaultConfig {
+        applicationId "com.camerastreamer.bk7258"
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Enable vector drawable support
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            
+            buildConfigField "String", "DEFAULT_STREAM_URL", '"rtsp://192.168.1.100:554/stream"'
+            buildConfigField "String", "DEFAULT_HTTP_URL", '"http://192.168.1.100:8080/stream.mjpg"'
+        }
+        
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            buildConfigField "String", "DEFAULT_STREAM_URL", '"rtsp://192.168.1.100:554/stream"'
+            buildConfigField "String", "DEFAULT_HTTP_URL", '"http://192.168.1.100:8080/stream.mjpg"'
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
+    kotlinOptions {
+        jvmTarget = '17'
+        freeCompilerArgs += [
+            '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api',
+            '-opt-in=androidx.compose.foundation.ExperimentalFoundationApi'
+        ]
+    }
+    
+    buildFeatures {
+        compose true
+        buildConfig true
+    }
+    
+    composeOptions {
+        kotlinCompilerExtensionVersion rootProject.ext.composeVersion
+    }
+    
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:' + rootProject.ext.lifecycleVersion
+    implementation 'androidx.activity:activity-compose:1.8.2'
+    
+    // Compose BOM
+    implementation platform('androidx.compose:compose-bom:' + rootProject.ext.composeBomVersion)
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.material:material-icons-extended'
+    
+    // ViewModel & LiveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:' + rootProject.ext.lifecycleVersion
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:' + rootProject.ext.lifecycleVersion
+    
+    // Navigation
+    implementation 'androidx.navigation:navigation-compose:' + rootProject.ext.navigationVersion
+    
+    // ExoPlayer with RTSP support
+    implementation 'androidx.media3:media3-exoplayer:' + rootProject.ext.exoPlayerVersion
+    implementation 'androidx.media3:media3-exoplayer-rtsp:' + rootProject.ext.exoPlayerVersion
+    implementation 'androidx.media3:media3-ui:' + rootProject.ext.exoPlayerVersion
+    implementation 'androidx.media3:media3-common:' + rootProject.ext.exoPlayerVersion
+    implementation 'androidx.media3:media3-session:' + rootProject.ext.exoPlayerVersion
+    
+    // Networking
+    implementation 'com.squareup.retrofit2:retrofit:' + rootProject.ext.retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:' + rootProject.ext.retrofitVersion
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + rootProject.ext.coroutinesVersion
+    
+    // Dependency Injection - Hilt
+    implementation 'com.google.dagger:hilt-android:' + rootProject.ext.hiltVersion
+    implementation 'androidx.hilt:hilt-navigation-compose:1.1.0'
+    kapt 'com.google.dagger:hilt-compiler:' + rootProject.ext.hiltVersion
+    
+    // Accompanist - System UI Controller, Permissions
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:' + rootProject.ext.accompanistVersion
+    implementation 'com.google.accompanist:accompanist-permissions:' + rootProject.ext.accompanistVersion
+    
+    // Network Discovery (mDNS/Bonjour)
+    implementation 'org.jmdns:jmdns:3.5.8'
+    
+    // Preferences DataStore
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    
+    // Timber for logging
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+    
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:' + rootProject.ext.coroutinesVersion
+    
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation platform('androidx.compose:compose-bom:' + rootProject.ext.composeBomVersion)
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}

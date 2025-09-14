@@ -1,0 +1,87 @@
+# GDB initialization script for BK7258 debugging
+# This file is automatically loaded by GDB when debugging
+
+# Connect to OpenOCD
+target remote localhost:3333
+
+# Load symbol information
+file build/bk7258_camera_streaming.elf
+
+# Enable pretty printing for C++ STL containers
+set print pretty on
+set print object on
+set print static-members on
+set print vtbl on
+set print demangle on
+set demangle-style gnu-v3
+set print sevenbit-strings off
+
+# Enable history
+set history filename ~/.gdb_history
+set history save on
+set history size 10000
+
+# ARM Cortex-M specific settings
+set arm force-mode thumb
+monitor arm semihosting enable
+
+# RTT configuration for printf debugging
+monitor rtt setup 0x20000000 0x10000 "SEGGER RTT"
+monitor rtt start
+monitor rtt channels
+
+# Useful macros for embedded debugging
+define reset_and_halt
+    monitor reset halt
+    load
+end
+
+define flash_and_run
+    monitor reset halt
+    load
+    monitor reset
+    continue
+end
+
+define print_registers
+    info registers
+end
+
+define print_stack
+    bt
+    info locals
+end
+
+define enable_swo
+    monitor tpiu config internal /tmp/swo.log uart off 120000000
+    monitor itm port 0 on
+end
+
+# Memory regions for BK7258
+# Flash: 0x00000000 - 0x001FFFFF (2MB)
+# SRAM:  0x20000000 - 0x2007FFFF (512KB)
+# Peripheral: 0x40000000 - 0x5FFFFFFF
+
+# Set breakpoint at main
+break main
+
+# Load the program
+load
+
+# Display useful information
+echo \n
+echo BK7258 GDB Debug Session Started\n
+echo ================================\n
+echo Flash: 0x00000000 - 0x001FFFFF (2MB)\n  
+echo SRAM:  0x20000000 - 0x2007FFFF (512KB)\n
+echo \n
+echo Useful commands:\n
+echo   reset_and_halt  - Reset and halt the CPU\n
+echo   flash_and_run   - Flash firmware and run\n
+echo   print_registers - Display CPU registers\n
+echo   print_stack     - Display stack trace\n
+echo   enable_swo      - Enable SWO trace output\n
+echo \n
+
+# Initial reset and halt
+reset_and_halt
